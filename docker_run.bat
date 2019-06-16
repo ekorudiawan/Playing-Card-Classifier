@@ -1,0 +1,1 @@
+docker run -it --rm -e DISPLAY=10.0.75.1:0.0 -v D:/Source-Code/Computer-Vision/Tugas2/:/home/ ekorudiawan/python-opencv bash
