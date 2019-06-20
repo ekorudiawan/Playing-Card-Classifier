@@ -3,7 +3,8 @@
 ## Dependencies
 
 * Python 3.7
-* OpenCV 3.31
+* OpenCV 3.4.6
+* scikit-learn
 
 ## List Source Code
 
