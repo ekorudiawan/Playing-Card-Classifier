@@ -5,10 +5,17 @@ import glob
 import random
 import string
 
-ori_img_path = "/home/Playing-Card-Classifier/original_images/"
-dataset_path = "/home/Playing-Card-Classifier/dataset/"
-label_path = "/home/Playing-Card-Classifier/dataset/label/"
-n_synthetic_img = 5
+# Location originam images
+ori_img_path = "../../original_images/"
+# Location training set
+train_path = "../../dataset/train/"
+train_label_path = "../../dataset/train/label/"
+# Location test set
+test_path = "../../dataset/test/"
+test_label_path = "../../dataset/test/label/"
+
+n_train_synthetic_img = 5
+n_test_synthetic_img = 1
 
 def random_string(length=10):
     letters = string.ascii_lowercase
@@ -38,46 +45,93 @@ def put_rectangle(img, rect_w=100, rect_h=200, pos=(200,200)):
 
 def main():
     print("Image Augmentation Tool")
-    label_file = open(label_path+"labels.txt","w+") 
+    print("Generating Train Data")
+    print("Please wait . . . ")
+    train_label_file = open(train_label_path+"labels.txt","w+") 
     files = [f for f in glob.glob(ori_img_path + "*.jpg", recursive=True)]
     for f in files:
         f = f.replace(ori_img_path,'')
         f = f.replace('.jpg','')
         label = f 
         
-        for i in range(n_synthetic_img):
+        for i in range(n_train_synthetic_img):
             img = cv.imread(ori_img_path+f+".jpg")
             h, w, _ = img.shape
             random_filename = random_string()
-            if i == 0:
-                cv.imwrite(dataset_path+random_filename+".jpg", img)
-                label_file.write(random_filename+","+label+"\r\n")
-
+            # Normal image
+            cv.imwrite(train_path+random_filename+".jpg", img)
+            train_label_file.write(random_filename+","+label+"\r\n")
+            # Change Brightness 
             brightness_val = random.randint(-10, 10)
             random_filename = random_string()
             b_img = change_brightness(img, brightness=brightness_val)
-            cv.imwrite(dataset_path+random_filename+".jpg", b_img)
-            label_file.write(random_filename+","+label+"\r\n")
-
+            cv.imwrite(train_path+random_filename+".jpg", b_img)
+            train_label_file.write(random_filename+","+label+"\r\n")
+            # Change Scale
             scaling_val = random.uniform(0.9, 1.1)
             rz_img = change_size(img, scale=scaling_val)
             random_filename = random_string()
-            cv.imwrite(dataset_path+random_filename+".jpg", rz_img)
-            label_file.write(random_filename+","+label+"\r\n")
-
+            cv.imwrite(train_path+random_filename+".jpg", rz_img)
+            train_label_file.write(random_filename+","+label+"\r\n")
+            # Change Orientation
             rot_val = random.randint(-10, 10)
             rot_img = rotate_image(img, angle=rot_val)
             random_filename = random_string()
-            cv.imwrite(dataset_path+random_filename+".jpg", rot_img)
-            label_file.write(random_filename+","+label+"\r\n")
-
+            cv.imwrite(train_path+random_filename+".jpg", rot_img)
+            train_label_file.write(random_filename+","+label+"\r\n")
+            # Put Black Rectangle
             pos = (random.randint(0, w), random.randint(0, h))
             rect_w = random.randint(0, 25*w//100)
             rect_h = random.randint(0, 25*h//100)
             rect_img = put_rectangle(img, rect_w=rect_w, rect_h=rect_h, pos=pos)
             random_filename = random_string()
-            cv.imwrite(dataset_path+random_filename+".jpg", rect_img)
-            label_file.write(random_filename+","+label+"\r\n")
+            cv.imwrite(train_path+random_filename+".jpg", rect_img)
+            # Write label for train data
+            train_label_file.write(random_filename+","+label+"\r\n")
+    print("Generating Test Data")
+    print("Please wait . . . ")
+    test_label_file = open(test_label_path+"labels.txt","w+") 
+    files = [f for f in glob.glob(ori_img_path + "*.jpg", recursive=True)]
+    for f in files:
+        f = f.replace(ori_img_path,'')
+        f = f.replace('.jpg','')
+        label = f 
+        
+        for i in range(n_test_synthetic_img):
+            img = cv.imread(ori_img_path+f+".jpg")
+            h, w, _ = img.shape
+            random_filename = random_string()
+            # Normal image
+            cv.imwrite(test_path+random_filename+".jpg", img)
+            test_label_file.write(random_filename+","+label+"\r\n")
+            # Change Brightness 
+            brightness_val = random.randint(-10, 10)
+            random_filename = random_string()
+            b_img = change_brightness(img, brightness=brightness_val)
+            cv.imwrite(test_path+random_filename+".jpg", b_img)
+            test_label_file.write(random_filename+","+label+"\r\n")
+            # Change Scale
+            scaling_val = random.uniform(0.9, 1.1)
+            rz_img = change_size(img, scale=scaling_val)
+            random_filename = random_string()
+            cv.imwrite(test_path+random_filename+".jpg", rz_img)
+            test_label_file.write(random_filename+","+label+"\r\n")
+            # Change Orientation
+            rot_val = random.randint(-10, 10)
+            rot_img = rotate_image(img, angle=rot_val)
+            random_filename = random_string()
+            cv.imwrite(test_path+random_filename+".jpg", rot_img)
+            test_label_file.write(random_filename+","+label+"\r\n")
+            # Put Black Rectangle
+            pos = (random.randint(0, w), random.randint(0, h))
+            rect_w = random.randint(0, 25*w//100)
+            rect_h = random.randint(0, 25*h//100)
+            rect_img = put_rectangle(img, rect_w=rect_w, rect_h=rect_h, pos=pos)
+            random_filename = random_string()
+            cv.imwrite(test_path+random_filename+".jpg", rect_img)
+            # Write label for test data
+            test_label_file.write(random_filename+","+label+"\r\n")
+            
     print("Image Augmentation Finish")
 if __name__ == "__main__":
     main()
