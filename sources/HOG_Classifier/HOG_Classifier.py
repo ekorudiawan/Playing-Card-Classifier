@@ -138,8 +138,6 @@ def main():
 		if get_label_name(int(lsvm_pred)) != label:
 			print("False Detection")
 			print("Close Image to Continue . . .")
-			font = cv.FONT_HERSHEY_SIMPLEX
-			cv.putText(img,label,(100,100), font, 4,(255,255,255),2,cv.LINE_AA)
 			cv.imshow("Image", img)
 			cv.waitKey(0)
 			lsvm_count_false += 1

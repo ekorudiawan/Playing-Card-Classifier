@@ -40,3 +40,7 @@ python HOG_Classifier.py
 cd ./sources/ORB_Classifier
 python ORB_Classifier.py
 ```
+
+### Notes
+
+Extracting feature, generating train dataset and training the classifier is taking around 10 minutes. After classifier successfully trained, program will predict all images in test dataset folder. If there is a wrong classification, program will show up the image. To continue classification process, just exit the image window. Program will result in classification result at the end.

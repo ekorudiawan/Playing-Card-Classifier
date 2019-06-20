@@ -164,8 +164,8 @@ def main():
         if get_label_name(int(rsvm_pred)) != label:
             print("False Detection")
             print("Close Image to Continue . . .")
-            # cv.imshow("Image", img)
-            # cv.waitKey(0)
+            cv.imshow("Image", img)
+            cv.waitKey(0)
             rsvm_count_false += 1
         else:
             print("True Detection")
@@ -177,8 +177,8 @@ def main():
         if get_label_name(int(lsvm_pred)) != label:
             print("False Detection")
             print("Close Image to Continue . . .")
-            # plt.hist(feature_histogram, normed=True, bins=n_clusters)
-            # plt.show()
+            cv.imshow("Image", img)
+            cv.waitKey(0)
             lsvm_count_false += 1
         else:
             print("True Detection")
